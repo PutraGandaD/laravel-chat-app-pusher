@@ -42,4 +42,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Get all conversations involving the current user.
+     *
+     * This includes conversations where the user is either:
+     * - The sender (sender_id matches the user's ID).
+     * - The receiver (receiver_id matches the user's ID).
+     *
+     */
+    public function conversations()
+    {
+        return $this->hasMany(Conversation::class, 'sender_id')->orWhere('receiver_id', $this->id);
+    }
 }
