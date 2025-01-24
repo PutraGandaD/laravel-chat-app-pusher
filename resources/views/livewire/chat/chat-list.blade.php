@@ -29,102 +29,113 @@
         {{-- chatlist  --}}
 
         <ul class="grid w-full p-2 spacey-y-2">
-            <li class="relative flex w-full gap-4 px-2 py-3 transition-colors duration-150 cursor-pointer hover:bg-gray-50 rounded-2xl dark:hover:bg-gray-700/70">
-                <a href="" class="shrink-0">
-                    <x-avatar />
-                </a>
 
-                <aside class="grid w-full grid-cols-12">
-                    <a href="#" class="relative w-full col-span-11 p-1 pb-2 overflow-hidden leading-5 truncate border-b border-gray-200 flex-nowrap">
-                        {{-- name and date  --}}
-                        <div class="flex items-center justify-between w-full">
+            @if ($conversations)
 
-                            <h6 class="font-medium tracking-wider text-gray-900 truncate">
-                                John Doe
-                            </h6>
+                @foreach ($conversations as $key => $conversation)
+                    <li class="relative flex w-full gap-4 px-2 py-3 transition-colors duration-150 cursor-pointer hover:bg-gray-50 rounded-2xl dark:hover:bg-gray-700/70 {{ $conversation->id == $selectedConversation->id ? 'bg-gray-100/70' : ''}}">
+                        <a href="" class="shrink-0">
+                            <x-avatar src="https://mighty.tools/mockmind-api/content/human/{{$key}}.jpg" alt="image"/>
+                        </a>
 
-                            <small class="text-gray-700">5d</small>
+                        <aside class="grid w-full grid-cols-12">
+                            <a href="{{ route('chat', $conversation->id) }}" class="relative w-full col-span-11 p-1 pb-2 overflow-hidden leading-5 truncate border-b border-gray-200 flex-nowrap">
+                                {{-- name and date  --}}
+                                <div class="flex items-center justify-between w-full">
 
-                        </div>
+                                    <h6 class="font-medium tracking-wider text-gray-900 truncate">
+                                        {{ $conversation->getReceiver()->name  }}
+                                    </h6>
 
-                        {{--  message body --}}
-                        <div class="flex items-center gap-x-2">
+                                    <small class="text-gray-700">{{ $conversation->messages->last()?->created_at?->shortAbsoluteDiffForHumans() }}</small>
 
-                            {{-- double tick --}}
-                            <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-all" viewBox="0 0 16 16">
-                                    <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z"/>
-                                    <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708z"/>
-                                  </svg>
-                            </span>
+                                </div>
 
-                            {{-- single tick --}}
-                            {{-- <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
-                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-                                </svg>
-                            </span> --}}
+                                {{--  message body --}}
+                                <div class="flex items-center gap-x-2">
 
-                            <p class="grow truncate text-sm font-[100]">
-                                Lorem ipsum dolor sit amet bjsbskjdsjkhjkh
-                            </p>
-
-                            <span class="p-px px-2 text-xs font-bold text-white bg-blue-500 rounded-full shrink-0">
-                                5
-                            </span>
-
-                        </div>
-                    </a>
-                </aside>
-
-                {{-- Dropdown --}}
-                <div class="flex flex-col col-span-1 my-auto text-center">
-
-                    <x-dropdown align="right" width="48">
-                        <x-slot name="trigger">
-                            <button>
-
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="text-gray-700 bi bi-three-dots-vertical w-7 h-7" viewBox="0 0 16 16">
-                                    <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
-                                </svg>
-
-                            </button>
-                        </x-slot>
-
-                        <x-slot name="content">
-                            <div class="w-full p-1">
-
-                                <button class="flex items-center w-full gap-3 px-4 py-2 text-sm leading-5 text-left text-gray-500 transition-all duration-150 ease-in-out hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
-
+                                    {{-- double tick --}}
                                     <span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-                                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                                            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-                                          </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-all" viewBox="0 0 16 16">
+                                            <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z"/>
+                                            <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708z"/>
+                                        </svg>
                                     </span>
 
-                                    View Profile
+                                    {{-- single tick --}}
+                                    {{-- <span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
+                                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                                        </svg>
+                                    </span> --}}
 
-                                </button>
+                                    <p class="grow truncate text-sm font-[100]">
+                                        Lorem ipsum dolor sit amet bjsbskjdsjkhjkh
+                                    </p>
 
-                                <button class="flex items-center w-full gap-3 px-4 py-2 text-sm leading-5 text-left text-gray-500 transition-all duration-150 ease-in-out hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
-
-                                    <span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-                                            <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
-                                          </svg>
+                                    <span class="p-px px-2 text-xs font-bold text-white bg-blue-500 rounded-full shrink-0">
+                                        5
                                     </span>
 
-                                    Delete
+                                </div>
+                            </a>
+                        </aside>
 
-                                </button>
+                        {{-- Dropdown --}}
+                        <div class="flex flex-col col-span-1 my-auto text-center">
 
-                            </div>
-                        </x-slot>
-                    </x-dropdown>
+                            <x-dropdown align="right" width="48">
+                                <x-slot name="trigger">
+                                    <button>
 
-                </div>
-            </li>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="text-gray-700 bi bi-three-dots-vertical w-7 h-7" viewBox="0 0 16 16">
+                                            <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                                        </svg>
+
+                                    </button>
+                                </x-slot>
+
+                                <x-slot name="content">
+                                    <div class="w-full p-1">
+
+                                        <button class="flex items-center w-full gap-3 px-4 py-2 text-sm leading-5 text-left text-gray-500 transition-all duration-150 ease-in-out hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
+
+                                            <span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                                                </svg>
+                                            </span>
+
+                                            View Profile
+
+                                        </button>
+
+                                        <button class="flex items-center w-full gap-3 px-4 py-2 text-sm leading-5 text-left text-gray-500 transition-all duration-150 ease-in-out hover:bg-gray-100 focus:outline-none focus:bg-gray-100">
+
+                                            <span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                                                </svg>
+                                            </span>
+
+                                            Delete
+
+                                        </button>
+
+                                    </div>
+                                </x-slot>
+                            </x-dropdown>
+
+                        </div>
+                    </li>
+                @endforeach
+
+            @else
+
+            @endif
+
+
         </ul>
 
     </main>
