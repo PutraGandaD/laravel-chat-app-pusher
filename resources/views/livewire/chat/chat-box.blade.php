@@ -13,10 +13,12 @@
 
                 {{-- avatar --}}
                 <div class="shrink-0">
-                    <x-avatar class="h-9 w-9 lg:w-11 lg:h-11" />
+                    <a href="" class="shrink-0">
+                        <x-avatar src="https://mighty.tools/mockmind-api/content/human/{{ $selectedConversation->getReceiver()->id}}.jpg" alt="image"/>
+                    </a>
                 </div>
 
-                <h6 class="font-bold truncate"> Yikes </h6>
+                <h6 class="font-bold truncate"> {{ $selectedConversation->getReceiver()->name }} </h6>
 
             </div>
         </header>
