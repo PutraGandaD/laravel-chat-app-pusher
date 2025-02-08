@@ -26,61 +26,67 @@
         {{-- body --}}
         <main class="flex flex-col gap-3 p-2.5 overflow-y-auto  flex-grow overscroll-contain overflow-x-hidden w-full my-auto">
 
-            <div
-            @class([
-                'max-w-[85%] md:max-w-[78%] flex w-auto gap-2 relative mt-2',
-            ])>
+            @if($loadedMessages)
+                @foreach($loadedMessages as $message)
+                    <div
+                        @class([
+                            'max-w-[85%] md:max-w-[78%] flex w-auto gap-2 relative mt-2',
+                            'ml-auto'=> $message->sender_id === auth()->id()
+                        ])>
+
+                        <div @class(['shrink-0'])>
+
+                            <x-avatar />
+
+                        </div>
+
+                        {{-- message body --}}
+                        <div @class(['flex flex-wrap text-[15px]  rounded-xl p-2.5 flex flex-col text-black bg-[#f6f6f8fb]',
+                                        'rounded-bl-none border  border-gray-200/40 '=> !($message->sender_id === auth()->id()),
+                                        'rounded-br-none bg-blue-500/80 text-white'=> $message->sender_id === auth()->id()
+                        ])>
+
+                            <p class="text-sm tracking-wide truncate whitespace-normal md:text-base lg:tracking-normal">
+                                {{ $message->body }}
+                            </p>
+
+                            <div class="flex gap-2 ml-auto">
+
+                                <p @class([
+                                    'text-xs ',
+                                    'text-gray-500'=>!($message->sender_id === auth()->id()),
+                                    'text-white'=>$message->sender_id === auth()->id()
+                                    ])>
+
+                                5:25 am
+
+                                </p>
+
+                                {{-- message status , only show if message belongs auth --}}
+                                <div>
+                                    {{-- double ticks --}}
+                                    <span @class('text-gray-200')>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-all" viewBox="0 0 16 16">
+                                            <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z"/>
+                                            <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708z"/>
+                                        </svg>
+                                    </span>
+
+                                    {{-- single ticks --}}
+                                    {{-- <span @class('text-gray-200')>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
+                                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
+                                        </svg>
+                                    </span> --}}
+                                </div>
 
 
-            <div @class(['shrink-0'])>
+                            </div>
 
-                <x-avatar />
-
-            </div>
-
-            {{-- message body --}}
-            <div @class(['flex flex-wrap text-[15px]  rounded-xl p-2.5 flex flex-col text-black bg-[#f6f6f8fb]',
-                            'rounded-bl-none border  border-gray-200/40 '=>false,
-                            'rounded-br-none bg-blue-500/80 text-white'=>true
-            ])>
-
-            <p class="text-sm tracking-wide truncate whitespace-normal md:text-base lg:tracking-normal">
-                ready to kill whatsapp with php and laravel lol
-            </p>
-
-            <div class="flex gap-2 ml-auto">
-
-                <p @class([
-                    'text-xs ',
-                    'text-gray-500'=>false,
-                    'text-white'=>true
-                    ])>
-
-                5:25 am
-
-                </p>
-
-                {{-- message status , only show if message belongs auth --}}
-                <div>
-                    {{-- double ticks --}}
-                    <span @class('text-gray-200')>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2-all" viewBox="0 0 16 16">
-                            <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0l7-7zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0z"/>
-                            <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708z"/>
-                        </svg>
-                    </span>
-
-                    {{-- single ticks --}}
-                    {{-- <span @class('text-gray-200')>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
-                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/>
-                        </svg>
-                    </span> --}}
-                </div>
-
-
-            </div>
-
+                        </div>
+                    </div>
+                @endforeach
+            @endif
 
         </main>
 
