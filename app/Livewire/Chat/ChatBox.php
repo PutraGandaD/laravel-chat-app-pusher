@@ -8,8 +8,9 @@ use Livewire\Component;
 class ChatBox extends Component
 {
     public $selectedConversation;
-    public $body = '';
+    public $body = "";
     public $loadedMessages;
+    public $iteration = 0;
 
     public function loadMessages()
     {
@@ -27,16 +28,18 @@ class ChatBox extends Component
             'body' => 'required|string'
         ]);
 
-        $createMessage = Message::create([
+        $createdMessage = Message::create([
             'conversation_id' => $this->selectedConversation->id,
             'sender_id' => auth()->id(),
             'receiver_id' => $this->selectedConversation->getReceiver()->id,
             'body' => $this->body
         ]);
 
-        $this->reset('body');
+        $this->body = "";
+        $this->iteration++;
 
-        // dd($createMessage);
+        #push message to loaded chat list
+        $this->loadedMessages->push($createdMessage);
     }
 
     // init

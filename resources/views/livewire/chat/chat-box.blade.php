@@ -108,7 +108,8 @@
 
                     <div class="grid grid-cols-12">
                          <input
-                                wire:model.defer="body"
+                                wire:model.live="body"
+                                id="send{{ $iteration }}"
                                 type="text"
                                 autocomplete="off"
                                 autofocus
@@ -140,3 +141,4 @@
     </div>
 
 </div>
+
