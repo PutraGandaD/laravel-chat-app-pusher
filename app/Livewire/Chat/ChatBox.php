@@ -23,9 +23,9 @@ class ChatBox extends Component
 
     public function sendMessage()
     {
-        // $this->validate([
-        //     'body' => 'required|string'
-        // ]);
+        $this->validate([
+            'body' => 'required|string'
+        ]);
 
         $createMessage = Message::create([
             'conversation_id' => $this->selectedConversation->id,
