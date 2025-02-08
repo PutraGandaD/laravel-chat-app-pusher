@@ -45,7 +45,7 @@
             ])>
 
             <p class="text-sm tracking-wide truncate whitespace-normal md:text-base lg:tracking-normal">
-                Lorem ipsum yakan?
+                ready to kill whatsapp with php and laravel lol
             </p>
 
             <div class="flex gap-2 ml-auto">
@@ -86,24 +86,28 @@
 
         {{-- footer (send message) --}}
         <footer class="inset-x-0 z-10 bg-white shrink-0">
-            <div class="p-2 border-t">
-                <form method="POST" autocapitalize="off">
+
+            <div class="p-2 border-t ">
+
+                <form
+                 wire:submit="sendMessage"
+                 method="POST" autocapitalize="off">
                     @csrf
 
                     <input type="hidden" autocomplete="false" style="display:none">
 
                     <div class="grid grid-cols-12">
-                        <input
-                                x-model="body"
+                         <input
+                                wire:model="body"
                                 type="text"
                                 autocomplete="off"
                                 autofocus
                                 placeholder="write your message here"
                                 maxlength="1700"
                                 class="col-span-10 bg-gray-100 border-0 rounded-lg outline-0 focus:border-0 focus:ring-0 hover:ring-0 focus:outline-none"
-                        >
+                         >
 
-                        <button x-bind:disabled="!body.trim()"  class="col-span-2" type='submit'>Send</button>
+                         <button class="col-span-2" type='submit'>Send</button>
 
                     </div>
 
@@ -116,6 +120,10 @@
                 @enderror
 
             </div>
+
+
+
+
 
         </footer>
 
