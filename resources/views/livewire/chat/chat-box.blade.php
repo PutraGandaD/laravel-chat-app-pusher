@@ -1,4 +1,12 @@
-<div class="w-full overflow-hidden">
+<divsi
+    @scroll-bottom.window="$nextTick(() => {
+        let conversationElement = document.getElementById('conversation');
+        if (conversationElement) {
+            conversationElement.scrollTop = conversationElement.scrollHeight;
+        }
+    })"
+    class="w-full overflow-hidden"
+>
     <div class="flex flex-col h-full overflow-y-scroll border-b grow">
 
         {{-- header --}}
@@ -24,7 +32,7 @@
         </header>
 
         {{-- body --}}
-        <main class="flex flex-col gap-3 p-2.5 overflow-y-auto  flex-grow overscroll-contain overflow-x-hidden w-full my-auto">
+        <main id="conversation" class="flex flex-col gap-3 p-2.5 overflow-y-auto  flex-grow overscroll-contain overflow-x-hidden w-full my-auto">
 
             @if($loadedMessages)
                 @foreach($loadedMessages as $message)
@@ -101,15 +109,14 @@
             <div class="p-2 border-t ">
 
                 <form
-                 wire:submit="sendMessage"
-                 method="POST" autocapitalize="off">
-                    @csrf
+                 wire:submit.prevent="sendMessage"
+                 autocapitalize="off">
 
                     <input type="hidden" autocomplete="false" style="display:none">
 
                     <div class="grid grid-cols-12">
                          <input
-                                wire:model.live="body"
+                                wire:model.defer="body"
                                 id="send{{ $iteration }}"
                                 type="text"
                                 autocomplete="off"
@@ -124,13 +131,6 @@
                     </div>
 
                 </form>
-
-                {{-- @error('body')
-
-                <p> {{$message}} </p>
-
-                @enderror --}}
-
             </div>
 
 

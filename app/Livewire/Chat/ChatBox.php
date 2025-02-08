@@ -38,6 +38,9 @@ class ChatBox extends Component
         $this->body = "";
         $this->iteration++;
 
+        #scroll to bottom
+        $this->dispatch("scroll-bottom");
+
         #push message to loaded chat list
         $this->loadedMessages->push($createdMessage);
     }
