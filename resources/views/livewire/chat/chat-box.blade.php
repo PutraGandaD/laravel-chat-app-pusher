@@ -58,7 +58,8 @@
                                     'text-white'=>$message->sender_id === auth()->id()
                                     ])>
 
-                                5:25 am
+                                    {{-- format time to am/pm 12hr --}}
+                                    {{ $message->created_at->format('g:i a') }}
 
                                 </p>
 
@@ -124,11 +125,11 @@
 
                 </form>
 
-                @error('body')
+                {{-- @error('body')
 
                 <p> {{$message}} </p>
 
-                @enderror
+                @enderror --}}
 
             </div>
 
