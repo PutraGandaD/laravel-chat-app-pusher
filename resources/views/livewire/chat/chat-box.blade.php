@@ -1,10 +1,26 @@
 <div
-    x-data="{ scrollToBottom() {
-        const container = $refs.conversation;
-        container.scrollTop = container.scrollHeight;
-    }}"
-    x-init="scrollToBottom()"
-    x-effect="scrollToBottom()"
+    x-data="{
+        height: 0, // Declare height variable
+        container: $refs.conversation, // Declare container variable
+    }"
+    x-init="
+        // Set height to the scrollHeight of the container
+        height = container.scrollHeight;
+
+        // Scroll to the bottom on initialization
+        $nextTick(() => {
+            container.scrollTop = height;
+        });
+    "
+    @scroll-bottom.window="
+        // Update height to the new scrollHeight
+        height = container.scrollHeight;
+
+        // Scroll to the bottom when the event is triggered
+        $nextTick(() => {
+            container.scrollTop = height;
+        });
+    "
     class="w-full overflow-hidden"
 >
     <div class="flex flex-col h-full overflow-y-scroll border-b grow">
@@ -30,7 +46,24 @@
         </header>
 
         {{-- Body --}}
-        <main id="conversation" x-ref="conversation" class="flex flex-col gap-3 p-2.5 overflow-y-auto flex-grow overscroll-contain overflow-x-hidden w-full my-auto">
+        <main
+        @scroll="
+            scropTop = $el.scrollTop;
+            if(scropTop <= 0){
+                window.livewire.emit('loadMoreMessages');
+
+            }
+        "
+
+        @update-chat-height.window="
+            newHeight= $el.scrollHeight;
+            oldHeight= height;
+
+            $el.scrollTop= newHeight- oldHeight;
+
+            height=newHeight;
+        "
+        id="conversation" x-ref="conversation" class="flex flex-col gap-3 p-2.5 overflow-y-auto flex-grow overscroll-contain overflow-x-hidden w-full my-auto">
             @if($loadedMessages)
                 @php
                     $previousMessage = null;

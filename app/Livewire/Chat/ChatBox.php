@@ -3,25 +3,46 @@
 namespace App\Livewire\Chat;
 
 use App\Models\Message;
-use Illuminate\Container\Attributes\Log;
 use Livewire\Component;
-use Livewire\Livewire;
 
 class ChatBox extends Component
 {
     public $selectedConversation;
     public $body = "";
     public $loadedMessages;
-    public $iteration = 0;
+    public $paginate_var = 10;
+
+    protected $listeners = [
+        'loadMoreMessages'
+    ];
+
+    public function loadMoreMessages(): void
+    {
+        // dd('detected');
+
+        // Increment the pagination limit
+        $this->paginate_var += 10;
+
+        // Reload messages
+        $this->loadMessages();
+
+        // Update the chat height
+        $this->dispatchBrowserEvent('update-chat-height');
+    }
 
     public function loadMessages()
     {
-        $this->loadedMessages = Message::where('conversation_id', $this->selectedConversation->id)->get();
-    }
+        // Get the total count of messages in the conversation
+        $count = Message::where('conversation_id', $this->selectedConversation->id)->count();
 
-    public function render()
-    {
-        return view('livewire.chat.chat-box');
+        // Calculate the number of messages to skip
+        $skip = max(0, $count - $this->paginate_var);
+
+        // Load the messages
+        $this->loadedMessages = Message::where('conversation_id', $this->selectedConversation->id)
+            ->skip($skip)
+            ->take($this->paginate_var)
+            ->get();
     }
 
     public function sendMessage()
@@ -39,23 +60,28 @@ class ChatBox extends Component
 
         $this->body = "";
 
-        #scroll to bottom
+        // Scroll to bottom
         $this->dispatchBrowserEvent("scroll-bottom");
 
-        #push message to loaded chat list
+        // Push message to loaded chat list
         $this->loadedMessages->push($createdMessage);
 
-        #update conversation model
+        // Update conversation model
         $this->selectedConversation->updated_at = now();
         $this->selectedConversation->save();
 
-        // #update chatlist with current new chat
+        // Update chat list with current new chat
         $this->emitTo('chat.chat-list', 'refresh');
     }
 
-    // init
+    // Initialize component
     public function mount()
     {
         $this->loadMessages();
+    }
+
+    public function render()
+    {
+        return view('livewire.chat.chat-box');
     }
 }
