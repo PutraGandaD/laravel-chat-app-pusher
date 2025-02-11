@@ -17,6 +17,32 @@ class ChatBox extends Component
         'loadMoreMessages'
     ];
 
+    public function getListeners()
+    {
+        $auth_id = auth()->user()->id;
+
+        return [
+            'loadMore',
+            "echo-private:users.{$auth_id},.Illuminate\\Notifications\\Events\\BroadcastNotificationCreated" => 'broadcastedNotifications'
+        ];
+    }
+
+    public function broadcastedNotifications($event)
+    {
+        // dd($event);
+
+        if ($event['type'] == MessageSent::class) {
+            if ($event['conversation_id'] == $this->selectedConversation->id) {
+                $this->dispatchBrowserEvent('scroll-bottom');
+
+                $newMessage = Message::find($event['message_id']);
+
+                // push the message
+                $this->loadedMessages->push($newMessage);
+            }
+        }
+    }
+
     public function loadMoreMessages(): void
     {
         // dd('detected');
