@@ -38,7 +38,6 @@ class ChatBox extends Component
         ]);
 
         $this->body = "";
-        $this->iteration++;
 
         #scroll to bottom
         $this->dispatchBrowserEvent("scroll-bottom");
