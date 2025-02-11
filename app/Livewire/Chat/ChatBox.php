@@ -3,7 +3,9 @@
 namespace App\Livewire\Chat;
 
 use App\Models\Message;
+use Illuminate\Container\Attributes\Log;
 use Livewire\Component;
+use Livewire\Livewire;
 
 class ChatBox extends Component
 {
@@ -39,7 +41,7 @@ class ChatBox extends Component
         $this->iteration++;
 
         #scroll to bottom
-        $this->dispatch("scroll-bottom");
+        $this->dispatchBrowserEvent("scroll-bottom");
 
         #push message to loaded chat list
         $this->loadedMessages->push($createdMessage);
@@ -48,15 +50,13 @@ class ChatBox extends Component
         $this->selectedConversation->updated_at = now();
         $this->selectedConversation->save();
 
-        #update chatlist with current new chat
-        $this->dispatch('chat.chat-list', 'refresh');
+        // #update chatlist with current new chat
+        $this->emitTo('chat.chat-list', 'refresh');
     }
 
     // init
     public function mount()
     {
-        logger('ChatBox component loaded');
-
         $this->loadMessages();
     }
 }

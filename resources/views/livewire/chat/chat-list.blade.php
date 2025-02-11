@@ -88,7 +88,7 @@
                                     </span> --}}
 
                                     <p class="grow truncate text-sm font-[100]">
-                                        Lorem ipsum dolor sit amet bjsbskjdsjkhjkh
+                                        {{ $conversation->messages->last()->body ?? '' }}
                                     </p>
 
                                     <span class="p-px px-2 text-xs font-bold text-white bg-blue-500 rounded-full shrink-0">
