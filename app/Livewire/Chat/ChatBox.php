@@ -3,6 +3,7 @@
 namespace App\Livewire\Chat;
 
 use App\Models\Message;
+use App\Notifications\MessageSent;
 use Livewire\Component;
 
 class ChatBox extends Component
@@ -72,6 +73,15 @@ class ChatBox extends Component
 
         // Update chat list with current new chat
         $this->emitTo('chat.chat-list', 'refresh');
+
+        // broadcast
+        $this->selectedConversation->getReceiver()
+            ->notify(new MessageSent(
+                Auth()->User(),
+                $createdMessage,
+                $this->selectedConversation,
+                $this->selectedConversation->getReceiver()->id,
+            ));
     }
 
     // Initialize component
