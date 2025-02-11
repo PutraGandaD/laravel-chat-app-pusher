@@ -91,9 +91,12 @@
                                         {{ $conversation->messages->last()->body ?? '' }}
                                     </p>
 
-                                    <span class="p-px px-2 text-xs font-bold text-white bg-blue-500 rounded-full shrink-0">
-                                        5
-                                    </span>
+                                    {{-- unread count --}}
+                                    @if ($conversation->unreadMessagesCount() > 0)
+                                        <span class="p-px px-2 text-xs font-bold text-white bg-blue-500 rounded-full shrink-0">
+                                            {{ $conversation->unreadMessagesCount() }}
+                                        </span>
+                                    @endif
 
                                 </div>
                             </a>

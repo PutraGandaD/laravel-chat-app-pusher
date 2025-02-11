@@ -30,4 +30,12 @@ class Conversation extends Model
             return User::firstWhere('id', $this->sender_id); // otherwise this is user is the receiver
         }
     }
+
+    public function unreadMessagesCount(): int
+    {
+        return $unreadMessages = Message::where('conversation_id', '=', $this->id)
+            ->where('receiver_id', auth()->user()->id)
+            ->whereNull('read_at')
+            ->count();
+    }
 }
