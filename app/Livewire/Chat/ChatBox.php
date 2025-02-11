@@ -47,6 +47,9 @@ class ChatBox extends Component
         #update conversation model
         $this->selectedConversation->updated_at = now();
         $this->selectedConversation->save();
+
+        #update chatlist with current new chat
+        $this->dispatch('chat.chat-list', 'refresh');
     }
 
     // init
