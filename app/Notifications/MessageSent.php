@@ -3,15 +3,16 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class MessageSent extends Notification implements ShouldBroadcastNow
+class MessageSent extends Notification implements ShouldBroadcast
 {
-    // use Queueable;
+    use Queueable;
 
     public $user;
     public $message;
