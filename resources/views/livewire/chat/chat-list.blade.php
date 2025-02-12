@@ -11,6 +11,14 @@
                 conversationElement.scrollIntoView({'behavior':'smooth'});
             }
         },200);
+
+        Echo.private('users.{{Auth()->User()->id}}')
+        .notification((notification)=>{
+            if(notification['type']== 'App\\Notifications\\MessageRead' || notification['type']== 'App\\Notifications\\MessageSent')
+            {
+                window.livewire.emit('refresh');
+            }
+        });
     "
 
     class="flex flex-col h-full overflow-hidden transition-all">
